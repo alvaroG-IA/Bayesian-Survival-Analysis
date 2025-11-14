@@ -1,10 +1,9 @@
-import pandas as pd
-from sklearn.model_selection import train_test_split
+from src.data.dataset import HeartHealthDataset
+from src.models.logistic_bayes import LogisticBayesModel
 
-data_path = 'data/fallo_cardiaco.csv'
-df = pd.read_csv(data_path)
+def main():
+    data_path = 'data/fallo_cardiaco.csv'
+    dataset = HeartHealthDataset(data_path)
 
-labels = df['DEATH_EVENT']
-data = df.drop(['DEATH_EVENT'], axis=1)
-
-Xtrain, Xtest, ytrain, ytest = train_test_split(data, labels, test_size=0.15, random_state=42, stratify=labels)
+    model = LogisticBayesModel()
+    
