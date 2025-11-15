@@ -12,7 +12,7 @@ def log_likelihood(w, X, y):
     Log-verosimilitud para regresión logística
     """
     z = np.dot(X, w)
-    return np.sum(y * z - np.log(1 + np.exp(z)))
+    return np.sum(y * z - np.log1p(np.exp(-np.abs(z))) - np.maximum(z, 0))
 
 def log_prior(w, mu=0, sigma=10):
     """
