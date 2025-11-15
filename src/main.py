@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score
 def main():
 
     data_path = 'data/fallo_cardiaco.csv'
+    
     dataset = HeartHealthDataset(data_path)
     X, y = dataset.preproces(mode='std')
 
@@ -13,9 +14,9 @@ def main():
     w = model.fit(X, y)
 
     pred =  np.where(np.dot(X, w) >= 0.5, 1, 0)
+    
     acc = accuracy_score(pred, y)
-
-    print(acc)
+    print(f'Accuracy {acc}')
 
 if __name__ == '__main__':
     main()
