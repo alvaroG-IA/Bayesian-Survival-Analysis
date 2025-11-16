@@ -21,13 +21,9 @@ class HeartHealthDataset(torch.utils.data.Dataset):
         y = self.labels[idx]
         return X, y
     
-    def preproces(self, mode: str = 'std'):
-        if mode == 'std':
-            self.std = StandardScaler()
-        elif mode == 'min_max':
-            self.std = MinMaxScaler()
+    def get_raw_data(self):
+        return self.data, self.labels
 
-        self.data_processed = self.std.fit_transform(self.data)
-        
-        return self.data_processed, self.labels
+    def get_col_names(self):
+        return self.data.columns.tolist()
     
