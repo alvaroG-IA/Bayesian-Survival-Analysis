@@ -1,7 +1,7 @@
 import numpy as np
 
 def metropolis_hastings(log_likelihood_func, log_prior_func, initial_w, X, y,
-                        iterations=5000, burn_in=1000, proposal_width=0.2):
+                        iterations=5000, burn_in=1000, proposal_width=0.1):
     w = initial_w
     samples = [w]
     accepted = 0
@@ -21,9 +21,7 @@ def metropolis_hastings(log_likelihood_func, log_prior_func, initial_w, X, y,
 
         samples.append(w)
     
-    print(f'Porcentaje de aceptación : {(accepted/iterations) * 100}')
-    
     if burn_in > 0:
         samples = samples[burn_in:]
 
-    return np.array(samples)
+    return np.array(samples), (accepted/iterations) * 100
