@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import torch
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 class HeartHealthDataset(torch.utils.data.Dataset):
     def __init__(self, data_path_cvs: str):

@@ -1,8 +1,8 @@
-from data.dataset import HeartHealthDataset
-from models.logistic_bayes import LogisticBayesModel
+from src.data.dataset import HeartHealthDataset
+from src.models.logistic_bayes import LogisticBayesModel
+from src.utils.helpers import plot_post_distribuitions
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-from utils.helpers import plot_post_distribuitions
 from sklearn.preprocessing import StandardScaler
 
 def main():

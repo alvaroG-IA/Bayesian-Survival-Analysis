@@ -1,6 +1,6 @@
 import numpy as np
-from utils.math_utils import log_likelihood, log_prior, analyze_posterior, sigmoid
-from utils.mcmc_utils import metropolis_hastings
+from src.utils.math_utils import log_likelihood, log_prior, analyze_posterior, sigmoid
+from src.utils.mcmc_utils import metropolis_hastings
 from sklearn.linear_model import LogisticRegression
 
 class LogisticBayesModel:
