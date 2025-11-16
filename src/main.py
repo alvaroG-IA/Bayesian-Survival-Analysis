@@ -21,7 +21,7 @@ def main():
 
     model = LogisticBayesModel()
 
-    model.fit(Xtrain_std, ytrain)
+    model.fit(Xtrain_std, ytrain, iterations=50000, burn_in=1000)
 
     pred = model.predict(Xtest_std)
 
@@ -40,7 +40,7 @@ def main():
         print(f'\n -- [Valores para la variable "{col_names[i]}"] -- ')
         print(f'* Valor medio/propuesto: {w_mean[i]:.4}')
         print(f'* Desviacion estándar: {w_std[i]:.4}')
-        print(f'CI (95% de conianza): ({w_ci[0][i]:.4}, {w_ci[1][i]:.4})')
+        print(f'*CI (95% de conianza): ({w_ci[0][i]:.4}, {w_ci[1][i]:.4})')
 
 
 if __name__ == '__main__':

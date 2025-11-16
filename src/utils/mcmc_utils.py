@@ -4,6 +4,7 @@ def metropolis_hastings(log_likelihood_func, log_prior_func, initial_w, X, y,
                         iterations=5000, burn_in=1000, proposal_width=0.1):
     w = initial_w
     samples = [w]
+    
     accepted = 0
 
     for _ in range(iterations):
