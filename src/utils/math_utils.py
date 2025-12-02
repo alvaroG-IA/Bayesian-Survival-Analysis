@@ -14,7 +14,7 @@ def log_likelihood(w, X, y):
     Log-verosimilitud para regresión logística
     """
     z = X @ w
-    return np.sum(y * z - np.log1p(np.exp(z)))     # np.log1p evita overflow si z es grande
+    return np.sum(y * z - np.log(1 + np.exp(z)))
 
 
 def log_prior_normal(w, mu=0, sigma=1):
@@ -32,6 +32,9 @@ def log_prior_laplace(w, mu=0, b=0.5):
 
 
 def log_prior_student_t(w, df=3, loc=0, scale=2.5):
+    """
+    Log-prior Student T
+    """
     return np.sum(t.logpdf(w, df=df, loc=loc, scale=scale))
 
 

@@ -11,8 +11,8 @@ def metropolis_hastings(log_likelihood_func, log_prior_func, initial_w, X, y,
     :param X: Datos de entrada.
     :param y: Etiquetas de entrada.
     :param iterations: Número de iteraciones de la cadena MCMC deseadas.
-    :param burn_in: Número de muestras iniciales que se descartan con el fin de que la cadena alcance la distribución
-                    estacionaria.
+    :param burn_in: Porcentaje de muestras que serán "quemadas" con el fin de garantizar usar muestras de la
+                    distribución estacionaria
     :param proposal_width: Valor de la desviación estándar de la distribución de propuesta, el cual controla el
                            tamaño de los saltos en el espacio de parámetros
     :return:

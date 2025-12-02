@@ -6,7 +6,11 @@ import os
 import time
 
 
-def set_seed(seed:int = 42):
+def set_seed(seed: int = 42):
+    """
+    Función encargada de fijar una semilla de aleatoriedad con el fin de garantizar reproducibilidad.
+    Por defecto se usa el valor de 42.
+    """
     random.seed(seed)
     np.random.seed(seed)
 
@@ -66,11 +70,10 @@ def seleccionar_prior_func():
 def plot_post_distribuitions(samples, w_mean, w_std, n_dim,
                              scaler_opt: int, prior_func_opt: int,
                              col_names, save_dir: str = 'reports/figures'):
-    # --- CONFIGURACIÓN DE GRILLE FIJA ---
+
     n_rows = 3
     n_cols = 4
 
-    # Lógica de nombres (se mantiene para el filename)
     if scaler_opt == 1:
         scaler_name = 'StandardScaler'
     elif scaler_opt == 2:

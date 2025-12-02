@@ -34,6 +34,7 @@ class LogisticBayesModel:
             # Inicialización con ceros
             initial_w = np.zeros(X.shape[1] + 1)
 
+        # Selección de la función prior
         if self.prior_func_opt == 1:
             prior_func = lambda w: log_prior_normal(w, mu=0, sigma=1)
         elif self.prior_func_opt == 2:
@@ -41,6 +42,7 @@ class LogisticBayesModel:
         else:
             prior_func = lambda w: log_prior_student_t(w, df=3, loc=0, scale=3)
 
+        # Añadimos el intercept a los datos
         X_aug = np.hstack([np.ones((X.shape[0], 1)), X])
 
         self.samples_, self.acceptance_ratio = metropolis_hastings(
