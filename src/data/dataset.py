@@ -1,6 +1,6 @@
 import pandas as pd
-import numpy as np
 import torch
+
 
 class HeartHealthDataset(torch.utils.data.Dataset):
     def __init__(self, data_path_cvs: str):
@@ -16,8 +16,8 @@ class HeartHealthDataset(torch.utils.data.Dataset):
         return self.data.shape[0]
     
     def __getitem__(self, idx):
-        X = self.data[idx]
-        y = self.labels[idx]
+        X = self.data.iloc[idx].values
+        y = self.labels.iloc[idx]
         return X, y
     
     def get_raw_data(self):

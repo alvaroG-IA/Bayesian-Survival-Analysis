@@ -1,5 +1,6 @@
 import numpy as np
-from scipy.stats import norm
+from scipy.stats import norm, laplace, t
+
 
 def sigmoid(z):
     """
@@ -7,24 +8,38 @@ def sigmoid(z):
     """
     return 1 / (1 + np.exp(-z))
 
+
 def log_likelihood(w, X, y):
     """
     Log-verosimilitud para regresión logística
     """
-    z = np.dot(X, w)
-    return np.sum(y * z - np.log1p(np.exp(-np.abs(z))) - np.maximum(z, 0))
+    z = X @ w
+    return np.sum(y * z - np.log1p(np.exp(z)))     # np.log1p evita overflow si z es grande
 
-def log_prior(w, mu=0, sigma=10):
+
+def log_prior_normal(w, mu=0, sigma=1):
     """
     Log-prior gaussiano
     """
     return np.sum(norm.logpdf(w, mu, sigma))
 
+
+def log_prior_laplace(w, mu=0, b=0.5):
+    """
+    Log-prior Laplace
+    """
+    return np.sum(laplace.logpdf(w, loc=mu, scale=b))
+
+
+def log_prior_student_t(w, df=3, loc=0, scale=2.5):
+    return np.sum(t.logpdf(w, df=df, loc=loc, scale=scale))
+
+
 def analyze_posterior(samples, confidence_level=95):
     """
     Función que nos ayudará a analizar los valores obtenidos por las muestras, para conocer:
-    - El valor medio
-    - Su desviación estádar, la cual no ayudará a ver como de fiables es ese valor
+    - El valor medio para cada característica.
+    - Su desviación estándar, la cual no ayudará a ver como de fiables son los valores medios
     - Intervalos de credibilidad, por defecto se usará un 95% de fiabilidad
     """
     
