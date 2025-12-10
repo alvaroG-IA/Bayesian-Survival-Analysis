@@ -4,7 +4,7 @@ from src.utils.persistence import load_pipeline
 from sklearn.metrics import classification_report
 
 # ============================
-#   DEFINICIÓN DE RUTAS
+#       ROOTS DEFINITION
 # ============================
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
@@ -12,14 +12,14 @@ PIPELINE_PATH = str(DATA_DIR / "full_model_pipeline.pkl")
 CSV_TEST_PATH = str(DATA_DIR / "fallo_cardiaco_test.csv")
 
 # ============================
-#   CARGA DEL PIPELINE
+#        PIPELINE LOAD
 # ============================
 pipeline = load_pipeline(PIPELINE_PATH)
 if pipeline is None:
     exit()
 
 # ============================
-#   INFORMACIÓN DEL PIPELINE
+#     PIPELINE INFORMATION
 # ============================
 prior_dict = {
     1: 'Normal',
@@ -27,25 +27,25 @@ prior_dict = {
     3: 'Student-t'
 }
 
-print("\n=== Información del modelo cargado ===")
-print(f"Scaler usado: {pipeline.scaler_name}")
-print("Prior usado:", prior_dict[pipeline.prior_func_used])
-print(f"Iteraciones: {pipeline.iterations}")
+print("\n=== Information of the pipeline loaded ===")
+print(f"Scaler used: {pipeline.scaler_name}")
+print("Prior-func used:", prior_dict[pipeline.prior_func_used])
+print(f"Num iterations: {pipeline.iterations}")
 print(f"Burn-in: {pipeline.burn_in*100:.1f}%")
-print(f"Proposal width de la distribución de propuesta: {pipeline.proposal_width}\n")
+print(f"Proposal width of the propose function: {pipeline.proposal_width}\n")
 
 # ============================
-#   CARGA DE DATOS DE TEST
+#         DATA LOAD
 # ============================
 dataset = HeartHealthDataset(CSV_TEST_PATH)
 X, y = dataset.get_raw_data()
 
 # ============================
-#   PREDICCIÓN
+#         PREDICTION
 # ============================
 preds = pipeline.predict(X)
 
 # ============================
-#   MÉTRICAS
+#           METRICS
 # ============================
 print(classification_report(y, preds))
