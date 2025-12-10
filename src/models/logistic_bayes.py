@@ -5,7 +5,8 @@ from src.utils.math_utils import (
     log_prior_laplace,
     log_prior_student_t,
     analyze_posterior,
-    sigmoid)
+    sigmoid
+)
 from src.utils.mcmc_utils import metropolis_hastings
 from sklearn.linear_model import LogisticRegression
 
@@ -26,15 +27,15 @@ class LogisticBayesModel:
     def fit(self, X, y, iterations=10000, burn_in=1000, proposal_width=0.1, use_lr_init=False):
 
         if use_lr_init:
-            # Inicialización usando regresión logística clásica
+            # Initialization using standard logistic regression
             lr = LogisticRegression(max_iter=1000)
             lr.fit(X, y)
             initial_w = np.concatenate([lr.intercept_, lr.coef_.ravel()])
         else:
-            # Inicialización con ceros
+            # Zero initialization
             initial_w = np.zeros(X.shape[1] + 1)
 
-        # Selección de la función prior
+        # Select prior function
         if self.prior_func_opt == 1:
             prior_func = lambda w: log_prior_normal(w, mu=0, sigma=1)
         elif self.prior_func_opt == 2:
@@ -42,7 +43,7 @@ class LogisticBayesModel:
         else:
             prior_func = lambda w: log_prior_student_t(w, df=3, loc=0, scale=3)
 
-        # Añadimos el intercept a los datos
+        # Add intercept term to data
         X_aug = np.hstack([np.ones((X.shape[0], 1)), X])
 
         self.samples_, self.acceptance_ratio = metropolis_hastings(
@@ -69,7 +70,7 @@ class LogisticBayesModel:
     
     def predict_proba(self, data):
         if self.w_mean_ is None:
-            raise RuntimeError("Debes de entrenar el modelo .fit() antes de predecir")
+            raise RuntimeError("You must train the model using .fit() before predicting.")
         z = self.intercept_[0] + np.dot(data, self.coef_.ravel())
         p1 = sigmoid(z)
         p0 = 1 - p1
