@@ -4,14 +4,14 @@ from scipy.stats import norm, laplace, t
 
 def sigmoid(z):
     """
-    Función sigmoide
+    Sigmoid function.
     """
     return 1 / (1 + np.exp(-z))
 
 
 def log_likelihood(w, X, y):
     """
-    Log-verosimilitud para regresión logística
+    Log-likelihood for logistic regression.
     """
     z = X @ w
     return np.sum(y * z - np.log(1 + np.exp(z)))
@@ -19,40 +19,41 @@ def log_likelihood(w, X, y):
 
 def log_prior_normal(w, mu=0, sigma=1):
     """
-    Log-prior gaussiano
+    Gaussian log-prior.
     """
     return np.sum(norm.logpdf(w, mu, sigma))
 
 
 def log_prior_laplace(w, mu=0, b=0.5):
     """
-    Log-prior Laplace
+    Laplace log-prior.
     """
     return np.sum(laplace.logpdf(w, loc=mu, scale=b))
 
 
 def log_prior_student_t(w, df=3, loc=0, scale=2.5):
     """
-    Log-prior Student T
+    Student-t log-prior.
     """
     return np.sum(t.logpdf(w, df=df, loc=loc, scale=scale))
 
 
 def analyze_posterior(samples, confidence_level=95):
     """
-    Función que nos ayudará a analizar los valores obtenidos por las muestras, para conocer:
-    - El valor medio para cada característica.
-    - Su desviación estándar, la cual no ayudará a ver como de fiables son los valores medios
-    - Intervalos de credibilidad, por defecto se usará un 95% de fiabilidad
+    Function that helps analyze the sampled posterior values.
+    Computes:
+    - The mean value for each parameter.
+    - Its standard deviation, indicating the reliability/uncertainty of the mean.
+    - Credible intervals (CI), using a default confidence level of 95%.
     """
     
-    # Calcular la media (Valor Central)
+    # Compute the mean (Central Value)
     w_mean = np.mean(samples, axis=0)
     
-    # Calcular la desviación estándar (Incertidumbre / Fiabilidad)
+    # Compute the standard deviation (Uncertainty / Reliability)
     w_std = np.std(samples, axis=0)
     
-    # Calcular los límites del Intervalo de Credibilidad (CI, ej. 95%)
+    # Compute the bounds of the Credible Interval (CI), e.g. 95%
     lower_percentile = (100 - confidence_level) / 2
     upper_percentile = 100 - lower_percentile
     
