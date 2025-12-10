@@ -8,72 +8,78 @@ import time
 
 def set_seed(seed: int = 42):
     """
-    Función encargada de fijar una semilla de aleatoriedad con el fin de garantizar reproducibilidad.
-    Por defecto se usa el valor de 42.
+    Set a random seed to ensure reproducibility.
+    The default value is 42.
     """
     random.seed(seed)
     np.random.seed(seed)
 
 
-def seleccionar_preprocesado():
+def select_preprocessing():
     """
-    Función encargada de permitir al usuario seleccionar el algoritmo de manifold learning
-    a utilizar mediante un menu por terminal
+    Allows the user to select the type of normalization to use
+    through a terminal menu.
     """
     while True:
-        print("[Menú selección del tipo de preprocesado]")
+        print("[Preprocessing Selection Menu]")
         print("[1] StandardScaler")
         print("[2] RobustScaler")
         print("[3] MinMaxScaler")
-        opt = input("Opción a elegir: ").strip()
+        opt = input("Choose an option: ").strip()
 
         if opt in {"1", "2", "3"}:
-            tipos = {
+            types = {
                 "1": "StandardScaler",
                 "2": "RobustScaler",
                 "3": "MinMaxScaler"
             }
-            print(f"✅ Seleccionado: {tipos[opt]}")
+            print(f"✅ Selected: {types[opt]}")
             return int(opt)
         else:
-            print("⚠️  Opción no válida, intenta de nuevo...")
+            print("⚠️  Invalid option, please try again...")
             time.sleep(0.5)
             os.system("clear" if os.name != "nt" else "cls")
 
 
-def seleccionar_prior_func():
+def select_prior_function():
     """
-    Función encargada de permitir al usuario seleccionar el algoritmo de manifold learning
-    a utilizar mediante un menu por terminal
+    Allows the user to select the prior sampling function
+    through a terminal menu.
     """
     while True:
-        print("[Menú selección de la función de muestreo]")
-        print("[1] Gaussiana")
+        print("[Sampling Function Selection Menu]")
+        print("[1] Gaussian")
         print("[2] Laplace")
         print("[3] Student-t")
-        opt = input("Opción a elegir: ").strip()
+        opt = input("Choose an option: ").strip()
 
         if opt in {"1", "2", "3"}:
-            tipos = {
-                "1": "Gaussiana",
+            types = {
+                "1": "Gaussian",
                 "2": "Laplace",
                 "3": "Student-t"
             }
-            print(f"✅ Seleccionado: {tipos[opt]}")
+            print(f"✅ Selected: {types[opt]}")
             return int(opt)
         else:
-            print("⚠️  Opción no válida, intenta de nuevo...")
+            print("⚠️  Invalid option, please try again...")
             time.sleep(0.5)
             os.system("clear" if os.name != "nt" else "cls")
 
 
-def plot_post_distribuitions(samples, w_mean, w_std, n_dim,
-                             scaler_opt: int, prior_func_opt: int,
-                             col_names, save_dir: str = 'reports/figures'):
-
+def plot_posterior_distributions(
+    samples, w_mean, w_std, n_dim,
+    scaler_opt: int, prior_func_opt: int,
+    col_names, save_dir: str = 'reports/figures'
+):
+    """
+    Plot posterior distributions of parameters obtained via MCMC, along with
+    their theoretical normal distributions for comparison.
+    """
     n_rows = 3
     n_cols = 4
 
+    # Map scaler option to name
     if scaler_opt == 1:
         scaler_name = 'StandardScaler'
     elif scaler_opt == 2:
@@ -81,29 +87,38 @@ def plot_post_distribuitions(samples, w_mean, w_std, n_dim,
     else:
         scaler_name = 'MinMaxScaler'
 
+    # Map prior option to name
     if prior_func_opt == 1:
-        prior_func_name = 'Gaussiana'
+        prior_func_name = 'Gaussian'
     elif prior_func_opt == 2:
         prior_func_name = 'Laplace'
     else:
         prior_func_name = 'Student-t'
 
-    report_name = f'{save_dir}/{scaler_name}_{prior_func_name}_post_distribuitions.png'
+    report_name = f'{save_dir}/{scaler_name}_{prior_func_name}_posterior_distributions.png'
 
     fig, axes = plt.subplots(n_rows, n_cols, figsize=(4 * n_cols, 12))
-
     axes_flat = axes.flatten()
 
+    # Plot each dimension
     for i in range(n_dim):
         ax = axes_flat[i]
 
-        ax.hist(samples[:, i], bins=30, density=True, alpha=0.6, label='Muestras MCMC')
+        # Histogram of MCMC samples
+        ax.hist(samples[:, i], bins=30, density=True, alpha=0.6, label='MCMC Samples')
 
-        x_vals = np.linspace(w_mean[i] - 3 * w_std[i], w_mean[i] + 3 * w_std[i], 100)
-        ax.plot(x_vals, norm.pdf(x_vals, w_mean[i], w_std[i]),
-                label='Distribución Normal Teórica', color='red', linestyle='--')
+        # Theoretical normal distribution
+        x_vals = np.linspace(w_mean[i] - 3 * w_std[i],
+                             w_mean[i] + 3 * w_std[i], 100)
+        ax.plot(
+            x_vals,
+            norm.pdf(x_vals, w_mean[i], w_std[i]),
+            label='Theoretical Normal Distribution',
+            color='red',
+            linestyle='--'
+        )
 
-        ax.set_title(f'Distr. posterior de {col_names[i]}')
+        ax.set_title(f'Posterior Distribution of {col_names[i]}')
         ax.legend(loc='upper right')
 
     plt.tight_layout()
