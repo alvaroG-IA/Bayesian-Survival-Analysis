@@ -15,13 +15,13 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 
 # ============================
-#     FIJADO DE SEMILLA
+#           SET SEED
 # ============================
 SEED = 42
 set_seed(SEED)
 
 # ============================
-#     DEFINICIÓN DE RUTAS
+#       ROOTS DEFINITION
 # ============================
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
@@ -32,7 +32,7 @@ CSV_TEST_PATH = str(DATA_DIR / "fallo_cardiaco_test.csv")
 
 
 # ============================
-#       CARGA DE DATOS
+#          DATA LOAD
 # ============================
 df = pd.read_csv(CSV_PATH)
 labels = df['DEATH_EVENT']
@@ -72,7 +72,7 @@ dataset = HeartHealthDataset(CSV_TRAIN_PATH)
 X, y = dataset.get_raw_data()
 
 # ============================
-#     SELECCIÓN DEL SCALER
+#       SCALER SELECTION
 # ============================
 scaler_opt = seleccionar_preprocesado()
 
@@ -85,13 +85,13 @@ else:
 
 
 # =================================
-#   SELECCIÓN DE LA FUNCIÓN PRIOR
+#       PRIOR-FUNC SELECTION
 # =================================
 prior_func_opt = seleccionar_prior_func()
 
 
 # ============================
-#   COLUMN-TRANSFORMER FINAL
+#   FINAL COLUMN-TRANSFORMER 
 # ============================
 preprocessor = ColumnTransformer(
     transformers=[
@@ -101,7 +101,7 @@ preprocessor = ColumnTransformer(
 )
 
 # ============================
-#      PIPELINE GENERAL
+#      GENERAL PIPELINE
 # ============================
 pipeline = Pipeline([
     ('preprocessor', preprocessor),
@@ -109,7 +109,7 @@ pipeline = Pipeline([
 ])
 
 # ============================
-#       ENTRENAMIENTO
+#          TRAINING
 # ============================
 pipeline['preprocessor'].fit(X)
 X_transformed = pipeline['preprocessor'].transform(X)
@@ -126,7 +126,7 @@ pipeline['model'].fit(
 )
 
 # ============================
-#         RESULTADOS
+#           RESULTS
 # ============================
 model_fitted = pipeline['model']
 print(f'Ratio de aceptación -> {model_fitted.acceptance_ratio:.2f}%')
@@ -143,11 +143,10 @@ w_std = model_fitted.w_std_
 w_ci = model_fitted.w_ci_
 
 # ===========================================
-#   NOMBRES DE VARIABLES POST-PROCESAMIENTO
+#     POST-PROCESSING VARIABLES NAMES
 # ===========================================
-all_features = ["intercept"] + continuous_cols + binary_cols    # importante mantener este orden tras uso de ColumTransformer
+all_features = ["intercept"] + continuous_cols + binary_cols  
 
-# Construimos DataFrame con coeficientes y estadísticas
 coef_data = {
     "feature": all_features,
     "w_mean": w_mean,
@@ -157,21 +156,15 @@ coef_data = {
 }
 
 df_coef = pd.DataFrame(coef_data)
-
-# Quitamos el intercepto para ver solo las variables
 df_features = df_coef[df_coef["feature"] != "intercept"].copy()
-
-# Magnitud del peso para ordenar por importancia
 df_features["abs_w"] = df_features["w_mean"].abs()
-
-# Ordenamos
 df_sorted = df_features.sort_values(by="abs_w", ascending=False)
 
 # Top N
 TOP_N = 5
 df_top = df_sorted.head(TOP_N)
 
-print(f"=== TOP {TOP_N} FEATURES POR IMPORTANCIA ===")
+print(f"=== TOP {TOP_N} FEATURES BY IMPORTANCE ===")
 
 for _, row in df_top.iterrows():
     print(f'Feature: {row["feature"]}')
@@ -185,6 +178,6 @@ plot_post_distribuitions(samples=samples[:, 1:], w_mean=w_mean[1:], w_std=w_std[
                          save_dir=str(PROJECT_ROOT / 'reports' / 'figures'))
 
 # ============================
-#   GUARDADO DEL PIPELINE
+#       PIPELINE SAVE
 # ============================
 save_pipeline(pipeline, PIPELINE_PATH)
