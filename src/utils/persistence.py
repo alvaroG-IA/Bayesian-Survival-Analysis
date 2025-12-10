@@ -4,24 +4,24 @@ from sklearn.pipeline import Pipeline
 
 def save_pipeline(pipeline: Pipeline, path: str) -> None:
     """
-    Función para guardar el pipeline como objeto pickle
+    Function to save a pipeline as a pickle object.
     """
     try:
         with open(path, 'wb') as f:
             pickle.dump(pipeline, f)
-        print(f'\n✅ Pipeline guardado correctamente en {path}')
+        print(f'\n✅ Pipeline successfully saved to {path}')
     except Exception as e:
-        print(f'Error al guardar con pickle {e}')
+        print(f'Error saving with pickle: {e}')
 
 
 def load_pipeline(path: str) -> Pipeline or None:
     """
-    Función para cargar un pipeline de un objeto pickle
+    Function to load a pipeline from a pickle object.
     """
     try:
         with open(path, 'rb') as f:
-            print('✅ Pipeline cargado correctamente')
+            print('✅ Pipeline successfully loaded')
             return pickle.load(f)
     except Exception as e:
-        print(f'Error al cargan con pickle {e}')
+        print(f'Error loading with pickle: {e}')
         return None
