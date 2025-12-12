@@ -1,4 +1,4 @@
-# Bayesian Logistic Regression for Heart Failure Mortality Prediction
+# 📄 Academic Project: Bayesian Logistic Regression for Heart Failure Mortality Prediction
 
 ## 🧐 Overview
 
