@@ -137,3 +137,10 @@ These plots, saved in `reports/figures/`, are crucial for:
 This project is licensed under the MIT License.
 
 ---
+
+## 📨 Contact
+Álvaro García Velasco
+- e-mail: alvarogarciavelasco1212@gmail.com
+- GitHub: [alvaroG-IA](https://github.com/alvaroG-IA)
+- LinkedIn: [Álvaro García Velasco](https://www.linkedin.com/in/alvaro-garcia-velasco/)
+
