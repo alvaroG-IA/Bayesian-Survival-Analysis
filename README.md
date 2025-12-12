@@ -60,7 +60,7 @@ The Bayesian Logistic Regression model supports:
  
 ---
 
-## Installation
+## 📦 Installation
 
 1. Clone the repository:
 
@@ -111,7 +111,7 @@ These selections determine how the data will be preprocessed and which prior wil
 
 ---
 
-### Testing / Inference
+### 🧪 Testing / Inference
 To run the model evaluation or generate predictions, execute the testing script `src/main_test`:
 
 #### **Unix / macOS**
