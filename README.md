@@ -125,6 +125,7 @@ python -m src.main_test
 The testing script loads the previously trained Bayesian Logistic Regression model and evaluates it on the corresponding dataset, producing predictions and performance metrics.
 
 ---
+
 ## 📊 Visualization
 
 Posterior distributions of the model coefficients can be visualized using the
@@ -132,5 +133,11 @@ Posterior distributions of the model coefficients can be visualized using the
 These plots provide insight into the uncertainty of each parameter and help assess the stability and reliability of the Bayesian estimates.
 
 During the execution of the training script, the posterior distribution plots are automatically generated and saved in the `reports/figures/` directory.
+
 ---
 
+## 📜 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
