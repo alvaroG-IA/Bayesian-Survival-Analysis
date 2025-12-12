@@ -18,7 +18,7 @@ The project uses a dataset containing clinical records of heart failure patients
 
 - `DEATH_EVENT`: Indicates whether the patient died during the follow-up period (`1` = death, `0` = survival).
 
-> Note: The dataset can be found in the `data/` directory.
+> **Location:** The primary dataset is located within the `data/` directory.
 
 ---
 
@@ -86,43 +86,33 @@ pip install -r requirements.txt
 ---
 ## ▶️ Usage
 
-To run the project, you can execute the training and testing modules directly from the command line using Python's `-m` flag.
+The main modules are designed to be executed from the command line using the Python `-m` flag.
 
 ### 🔧 Training the Model
 
-The training script is located in `src/main_train`.  
-You can run it using:
+The training script initiates an interactive menu prompting the user to select the data normalization method and the prior distribution (Gaussian, Laplace, or Student-t) for MCMC inference.
 
-#### **Unix / macOS**
 ```bash
+# Unix / macOS
 python3 -m src.main_train
-```
-#### **Windows**
-```bash
+
+# Windows
 python -m src.main_train
 ```
-When the training script starts, an interactive menu will appear.
-You will be prompted to select:
-
-1. The type of data normalization (StandardScaler, RobustScaler, or MinMaxScaler).
-2. The prior distribution to be used in the Bayesian Logistic Regression model (Gaussian, Laplace, or Student-t).
-
-These selections determine how the data will be preprocessed and which prior will be used for parameter sampling during MCMC inference.
 
 ---
 
 ### 🧪 Testing / Inference
-To run the model evaluation or generate predictions, execute the testing script `src/main_test`:
 
-#### **Unix / macOS**
+The evaluation script loads the previously trained Bayesian Logistic Regression model, performs predictions, and generates performance metrics and uncertainty analysis.
+
 ```bash
+# Unix / macOS
 python3 -m src.main_test
-```
-#### **Windows**
-```bash
+
+# Windows
 python -m src.main_test
 ```
-The testing script loads the previously trained Bayesian Logistic Regression model and evaluates it on the corresponding dataset, producing predictions and performance metrics.
 
 ---
 
@@ -132,12 +122,18 @@ Posterior distributions of the model coefficients can be visualized using the
 `plot_posterior_distributions` function located in `src/utils/plot_utils.py`.  
 These plots provide insight into the uncertainty of each parameter and help assess the stability and reliability of the Bayesian estimates.
 
-During the execution of the training script, the posterior distribution plots are automatically generated and saved in the `reports/figures/` directory.
+These plots, saved in `reports/figures/`, are crucial for:
+
+- Visualizing the shape of the posterior distribution (e.g., Gaussian-like, skewed).
+
+- Assessing the stability of the Bayesian estimates.
+
+- Interpreting the uncertainty associated with each clinical feature.
 
 ---
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License.
 
 ---
